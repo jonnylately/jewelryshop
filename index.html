@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Luna & Gold — Jewellery</title>
+  <meta name="description" content="Modern jewellery crafted in sterling silver and gold vermeil. Free UK shipping over £75." />
+  <style>
+    :root{
+      --bg:#0b0c10; --panel:#11131a; --text:#f4f5f7; --muted:#b7bcc9;
+      --line:rgba(255,255,255,.10); --accent:#d8b45a; --accent2:#8fe3ff;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(900px 500px at 10% 0%, rgba(216,180,90,.18), transparent 60%),
+        radial-gradient(900px 500px at 90% 10%, rgba(143,227,255,.12), transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:1120px; margin:0 auto; padding:22px 18px 80px}
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      position:sticky; top:0; backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,12,16,.86), rgba(11,12,16,.45));
+      border-bottom:1px solid var(--line);
+      padding:14px 18px; z-index:10;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.4px}
+    .logo{
+      width:34px; height:34px; border-radius:10px;
+      background: conic-gradient(from 210deg, var(--accent), rgba(216,180,90,.2), var(--accent2));
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    nav{display:flex; gap:14px; flex-wrap:wrap}
+    nav a{opacity:.9; text-decoration:none; font-size:14px; padding:8px 10px; border-radius:10px}
+    nav a:hover{background:rgba(255,255,255,.06)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 14px; border-radius:12px; text-decoration:none; font-weight:600;
+      cursor:pointer;
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(216,180,90,.95), rgba(216,180,90,.55));
+      border-color: rgba(216,180,90,.55);
+      color:#1b1200;
+    }
+    .btn:disabled{opacity:.6; cursor:not-allowed}
+    .hero{display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; margin-top:26px}
+    .card{
+      background: linear-gradient(to bottom, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero .left{padding:28px}
+    h1{margin:0 0 10px; font-size: clamp(34px, 5vw, 56px); line-height:1.02}
+    .sub{color:var(--muted); font-size:16px; line-height:1.6; max-width:56ch}
+    .heroActions{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .badges{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+    .badge{
+      font-size:13px; color:var(--muted);
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+    }
+    .hero .right{padding:20px; overflow:hidden; position:relative}
+    .mock{
+      height:100%;
+      min-height:280px;
+      border-radius: calc(var(--radius) - 4px);
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(240px 160px at 20% 30%, rgba(216,180,90,.25), transparent 60%),
+        radial-gradient(260px 190px at 70% 40%, rgba(143,227,255,.18), transparent 65%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      position:relative;
+    }
+    .mock:before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.35) 50%, transparent 55%),
+        radial-gradient(2px 2px at 65% 55%, rgba(255,255,255,.20) 50%, transparent 55%),
+        radial-gradient(2px 2px at 80% 25%, rgba(255,255,255,.18) 50%, transparent 55%);
+      opacity:.7;
+    }
+    .mockText{
+      position:absolute; left:18px; bottom:16px; right:18px;
+      display:flex; justify-content:space-between; gap:14px; align-items:flex-end;
+      color:rgba(255,255,255,.92);
+    }
+    .mockText strong{display:block; font-size:14px}
+    .mockText span{display:block; color:var(--muted); font-size:13px; margin-top:2px}
+    .section{margin-top:26px}
+    .section h2{margin:0 0 12px; font-size:20px}
+    .grid{
+      display:grid; grid-template-columns: repeat(12, 1fr); gap:14px;
+    }
+    .tile{grid-column: span 4; padding:16px}
+    .tile h3{margin:10px 0 6px; font-size:16px}
+    .tile p{margin:0; color:var(--muted); line-height:1.55; font-size:14px}
+    .product{
+      grid-column: span 4;
+      padding:16px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .thumb{
+      height:160px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(260px 180px at 30% 40%, rgba(216,180,90,.22), transparent 60%),
+        radial-gradient(240px 180px at 70% 60%, rgba(143,227,255,.14), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    }
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .price{font-weight:800; letter-spacing:.2px}
+    .fine{color:var(--muted); font-size:12px; line-height:1.5}
+    footer{margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:18px}
+    @media (max-width: 900px){
+      .hero{grid-template-columns: 1fr}
+      .tile, .product{grid-column: span 12}
+      nav{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>Luna &amp; Gold</div>
+    </div>
+    <nav aria-label="Primary">
+      <a href="#collections">Collections</a>
+      <a href="#craft">Craft</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn" href="#collections">Shop</a>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="card left">
+        <h1>Jewellery that looks like it was made for you.</h1>
+        <p class="sub">
+          Sterling silver and gold vermeil essentials — designed in London, finished by hand, built for everyday wear.
+        </p>
+        <div class="heroActions">
+          <a class="btn primary" href="#collections">Shop bestsellers</a>
+          <a class="btn" href="#craft">How it’s made</a>
+        </div>
+        <div class="badges" aria-label="Store highlights">
+          <div class="badge">Free UK shipping £75+</div>
+          <div class="badge">30-day returns</div>
+          <div class="badge">Nickel-free</div>
+        </div>
+        <p class="fine" style="margin-top:14px">
+          Payments are processed securely via Stripe Checkout.
+        </p>
+      </div>
+
+      <div class="card right">
+        <div class="mock" role="img" aria-label="Lifestyle jewellery showcase">
+          <div class="mockText">
+            <div>
+              <strong>Signature Drop Collection</strong>
+              <span>Minimal. Bright. Effortless.</span>
+            </div>
+            <div class="badge">New</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="craft" class="section">
+      <h2>Crafted for daily wear</h2>
+      <div class="grid">
+        <div class="card tile">
+          <h3>Materials that last</h3>
+          <p>Ethically sourced sterling silver and gold vermeil with a durable finish.</p>
+        </div>
+        <div class="card tile">
+          <h3>Comfort-first design</h3>
+          <p>Lightweight silhouettes with smooth edges — made to be worn all day.</p>
+        </div>
+        <div class="card tile">
+          <h3>Gift-ready packaging</h3>
+          <p>Every order arrives in a protective pouch and recyclable box.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="collections" class="section">
+      <h2>Shop bestsellers</h2>
+      <div class="grid" id="productGrid">
+        <article class="card product">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="row">
+            <div>
+              <strong>Orbit Hoops</strong><br/>
+              <span class="fine">Gold vermeil</span>
+            </div>
+            <div class="price">£48</div>
+          </div>
+          <p class="fine">Small, warm-toned hoops that elevate any look.</p>
+          <button class="btn primary buyBtn"
+            data-name="Orbit Hoops"
+            data-description="Gold vermeil hoops"
+            data-unit-amount="4800"
+            data-quantity="1">
+            Buy now
+          </button>
+        </article>
+
+        <article class="card product">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="row">
+            <div>
+              <strong>Nova Pendant</strong><br/>
+              <span class="fine">Sterling silver</span>
+            </div>
+            <div class="price">£62</div>
+          </div>
+          <p class="fine">A clean pendant with a subtle sparkle finish.</p>
+          <button class="btn primary buyBtn"
+            data-name="Nova Pendant"
+            data-description="Sterling silver pendant necklace"
+            data-unit-amount="6200"
+            data-quantity="1">
+            Buy now
+          </button>
+        </article>
+
+        <article class="card product">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="row">
+            <div>
+              <strong>Halo Stacker Ring</strong><br/>
+              <span class="fine">Gold vermeil</span>
+            </div>
+            <div class="price">£39</div>
+          </div>
+          <p class="fine">Slim stacker ring with a soft rounded profile.</p>
+          <button class="btn primary buyBtn"
+            data-name="Halo Stacker Ring"
+            data-description="Gold vermeil stacker ring"
+            data-unit-amount="3900"
+            data-quantity="1">
+            Buy now
+          </button>
+        </article>
+      </div>
+
+      <p class="fine" style="margin-top:12px">
+        For fulfilment, use Stripe webhooks (don’t rely on customers reaching the success page). :contentReference[oaicite:3]{index=3}
+      </p>
+    </section>
+
+    <section id="reviews" class="section">
+      <h2>What customers say</h2>
+      <div class="grid">
+        <div class="card tile">
+          <h3>“Perfect everyday hoops.”</h3>
+          <p>Feels premium and lightweight — I haven’t taken them off since they arrived.</p>
+        </div>
+        <div class="card tile">
+          <h3>“Packaging is beautiful.”</h3>
+          <p>Arrived fast and gift-ready. The pendant looks even better in person.</p>
+        </div>
+        <div class="card tile">
+          <h3>“Great quality for the price.”</h3>
+          <p>So smooth and comfortable. I’ll be back for the stacker set.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2>FAQ</h2>
+      <div class="grid">
+        <div class="card tile">
+          <h3>Is it hypoallergenic?</h3>
+          <p>All pieces are nickel-free. If you have specific sensitivities, message us before ordering.</p>
+        </div>
+        <div class="card tile">
+          <h3>How do returns work?</h3>
+          <p>30-day returns on unworn items in original packaging.</p>
+        </div>
+        <div class="card tile">
+          <h3>How do payments work?</h3>
+          <p>You’ll be redirected to Stripe Checkout to pay securely.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="row">
+        <div>© <span id="year"></span> Luna &amp; Gold</div>
+        <div class="fine">Secure payments by Stripe</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    async function beginCheckout(buttonEl) {
+      const original = buttonEl.textContent;
+      buttonEl.disabled = true;
+      buttonEl.textContent = "Redirecting…";
+
+      try {
+        const item = {
+          name: buttonEl.dataset.name,
+          description: buttonEl.dataset.description,
+          unit_amount: Number(buttonEl.dataset.unitAmount), // in pence
+          quantity: Number(buttonEl.dataset.quantity || 1)
+        };
+
+        const resp = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: [item] })
+        });
+
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data?.error || "Checkout failed");
+
+        // Stripe Checkout Sessions provide a redirect URL (session.url). :contentReference[oaicite:4]{index=4}
+        window.location.href = data.url;
+      } catch (e) {
+        alert(e.message);
+        buttonEl.disabled = false;
+        buttonEl.textContent = original;
+      }
+    }
+
+    document.querySelectorAll(".buyBtn").forEach((btn) => {
+      btn.addEventListener("click", () => beginCheckout(btn));
+    });
+  </script>
+</body>
+</html>
