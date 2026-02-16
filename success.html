@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Order confirmed — Luna & Gold</title>
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:#0b0c10;color:#f4f5f7}
+    .wrap{max-width:860px;margin:0 auto;padding:28px 18px}
+    .card{border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.04);padding:18px}
+    a{color:inherit}
+    .muted{color:rgba(255,255,255,.72)}
+    .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Order confirmed</h1>
+    <p class="muted">Thanks for your purchase.</p>
+
+    <div class="card">
+      <div class="row"><strong>Status</strong><span id="status" class="muted">Loading…</span></div>
+      <div class="row"><strong>Payment</strong><span id="payment" class="muted">—</span></div>
+      <div class="row"><strong>Email</strong><span id="email" class="muted">—</span></div>
+      <div class="row"><strong>Total</strong><span id="total" class="muted">—</span></div>
+    </div>
+
+    <p class="muted" style="margin-top:14px">
+      Note: for fulfilment, rely on Stripe webhooks rather than this page. :contentReference[oaicite:5]{index=5}
+    </p>
+
+    <p style="margin-top:18px"><a href="/">Back to shop</a></p>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get("session_id");
+
+    async function load() {
+      if (!sessionId) {
+        document.getElementById("status").textContent = "Missing session_id";
+        return;
+      }
+      const resp = await fetch(`/session-status?session_id=${encodeURIComponent(sessionId)}`);
+      const data = await resp.json();
+      if (!resp.ok) {
+        document.getElementById("status").textContent = data?.error || "Error";
+        return;
+      }
+      document.getElementById("status").textContent = data.status || "—";
+      document.getElementById("payment").textContent = data.payment_status || "—";
+      document.getElementById("email").textContent = data.customer_email || "—";
+      if (typeof data.amount_total === "number" && data.currency) {
+        const amount = (data.amount_total / 100).toFixed(2);
+        document.getElementById("total").textContent = `${data.currency.toUpperCase()} ${amount}`;
+      } else {
+        document.getElementById("total").textContent = "—";
+      }
+    }
+    load();
+  </script>
+</body>
+</html>
