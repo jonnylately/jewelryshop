@@ -3,6 +3,19 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 import cors from "cors";
 
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://jonnylately.github.io";
+
+app.use(
+  cors({
+    origin: FRONTEND_ORIGIN,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
+
+// Explicitly handle preflight for all routes
+app.options("*", cors({ origin: FRONTEND_ORIGIN }));
+
 dotenv.config();
 
 if (!process.env.STRIPE_SECRET_KEY) {
