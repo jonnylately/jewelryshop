@@ -391,7 +391,7 @@
           quantity: Number(buttonEl.dataset.quantity || 1)
         };
 
-        const resp = await fetch("/create-checkout-session", {
+        const resp = await fetch("https://https://jewelryshop-1566.onrender.com/create-checkout-session", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ items: [item] })
