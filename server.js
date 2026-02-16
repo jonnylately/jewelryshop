@@ -3,8 +3,25 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 import cors from "cors";
 
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "https://jonnylately.github.io";
+dotenv.config();
 
+if (!process.env.STRIPE_SECRET_KEY) {
+  console.error("Missing STRIPE_SECRET_KEY");
+  process.exit(1);
+}
+
+if (!process.env.DOMAIN) {
+  console.error("Missing DOMAIN (e.g. https://jonnylately.github.io/jewelryshop)");
+  process.exit(1);
+}
+
+const app = express();
+app.use(express.json());
+
+const FRONTEND_ORIGIN =
+  process.env.FRONTEND_ORIGIN || "https://jonnylately.github.io";
+
+// CORS must be registered before routes
 app.use(
   cors({
     origin: FRONTEND_ORIGIN,
@@ -13,40 +30,10 @@ app.use(
   })
 );
 
-// Explicitly handle preflight for all routes
+// Handle preflight for all routes
 app.options("*", cors({ origin: FRONTEND_ORIGIN }));
 
-dotenv.config();
-
-if (!process.env.STRIPE_SECRET_KEY) {
-  console.error("Missing STRIPE_SECRET_KEY");
-  process.exit(1);
-}
-
-// DOMAIN should be your GitHub Pages base URL, e.g. https://USERNAME.github.io/REPO
-if (!process.env.DOMAIN) {
-  console.error("Missing DOMAIN (e.g. https://USERNAME.github.io/REPO)");
-  process.exit(1);
-}
-
-const app = express();
-app.use(express.json());
-
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-// FRONTEND_ORIGIN should be the origin only, e.g. https://USERNAME.github.io
-const allowedOrigins = (process.env.FRONTEND_ORIGIN || "")
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
-app.use(
-  cors({
-    origin: allowedOrigins.length ? allowedOrigins : true,
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-  })
-);
 
 app.get("/health", (req, res) => res.json({ ok: true }));
 
@@ -60,7 +47,6 @@ app.post("/create-checkout-session", async (req, res) => {
     const line_items = items.map((it) => {
       const priceId = String(it.priceId || "");
       if (!priceId.startsWith("price_")) throw new Error("Invalid priceId");
-
       const quantity = Math.max(1, Math.min(99, Number(it.quantity || 1)));
       return { price: priceId, quantity };
     });
@@ -73,10 +59,10 @@ app.post("/create-checkout-session", async (req, res) => {
       cancel_url: `${process.env.DOMAIN}/cancel.html`,
     });
 
-    return res.json({ url: session.url });
+    res.json({ url: session.url });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: err.message || "Server error" });
+    res.status(500).json({ error: err.message || "Server error" });
   }
 });
 
@@ -89,7 +75,7 @@ app.get("/session-status", async (req, res) => {
 
     const session = await stripe.checkout.sessions.retrieve(session_id);
 
-    return res.json({
+    res.json({
       status: session.status,
       payment_status: session.payment_status,
       customer_email: session.customer_details?.email || null,
@@ -98,7 +84,7 @@ app.get("/session-status", async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: err.message || "Server error" });
+    res.status(500).json({ error: err.message || "Server error" });
   }
 });
 
