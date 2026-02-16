@@ -376,42 +376,39 @@
   </main>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+  const API_BASE = "https://jewelryshop-1566.onrender.com"; // <-- set this
 
-    async function beginCheckout(buttonEl) {
-      const original = buttonEl.textContent;
-      buttonEl.disabled = true;
-      buttonEl.textContent = "Redirecting…";
+  async function beginCheckout(buttonEl) {
+    const original = buttonEl.textContent;
+    buttonEl.disabled = true;
+    buttonEl.textContent = "Redirecting…";
 
-      try {
-        const item = {
-          name: buttonEl.dataset.name,
-          description: buttonEl.dataset.description,
-          unit_amount: Number(buttonEl.dataset.unitAmount), // in pence
-          quantity: Number(buttonEl.dataset.quantity || 1)
-        };
+    try {
+      const item = {
+        priceId: buttonEl.dataset.priceId,
+        quantity: Number(buttonEl.dataset.quantity || 1),
+      };
 
-        const resp = await fetch("https://https://jewelryshop-1566.onrender.com/create-checkout-session", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ items: [item] })
-        });
+      const resp = await fetch(`${API_BASE}/create-checkout-session`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: [item] }),
+      });
 
-        const data = await resp.json();
-        if (!resp.ok) throw new Error(data?.error || "Checkout failed");
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data?.error || "Checkout failed");
 
-        // Stripe Checkout Sessions provide a redirect URL (session.url). :contentReference[oaicite:4]{index=4}
-        window.location.href = data.url;
-      } catch (e) {
-        alert(e.message);
-        buttonEl.disabled = false;
-        buttonEl.textContent = original;
-      }
+      window.location.href = data.url;
+    } catch (e) {
+      alert(e.message);
+      buttonEl.disabled = false;
+      buttonEl.textContent = original;
     }
+  }
 
-    document.querySelectorAll(".buyBtn").forEach((btn) => {
-      btn.addEventListener("click", () => beginCheckout(btn));
-    });
+  document.querySelectorAll(".buyBtn").forEach((btn) => {
+    btn.addEventListener("click", () => beginCheckout(btn));
+  });
   </script>
 </body>
 </html>
