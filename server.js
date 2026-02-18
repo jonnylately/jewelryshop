@@ -11,7 +11,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 
 if (!process.env.DOMAIN) {
-  console.error("Missing DOMAIN (e.g. https://jonnylately.github.io/jewelryshop)");
+  console.error("Missing DOMAIN (e.g. https://lunagoldshop.gold/)");
   process.exit(1);
 }
 
@@ -19,7 +19,7 @@ const app = express();
 app.use(express.json());
 
 const FRONTEND_ORIGIN =
-  process.env.FRONTEND_ORIGIN || "https://jonnylately.github.io";
+  process.env.FRONTEND_ORIGIN || "https://lunagoldshop.gold/";
 
 // CORS must be registered before routes
 app.use(
